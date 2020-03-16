@@ -27,6 +27,11 @@ const appRoutes: Routes = [
     component: OrganizerComponent
   },
   {
+    path: '',
+    component: OrganizerComponent,
+    pathMatch: 'full'
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }
