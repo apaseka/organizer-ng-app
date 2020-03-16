@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row" style="margin-top:12px;">
+    <div class="col-md-4">
+      <select class="mdb-select md-form">
+        <option value="" disabled selected>Choose specialist</option>
+<!--        <a (click)="selectWorker(wr)" *ngFor="let wr of workers"></a>-->
+<!--        <option value="selectWorker(wr)" *ngFor="let wr of workers"></option>-->
+      </select>
+      <button (click)="assignWorker(selectedProject, selectedWorker)"
+              [disabled]="selectedProject == null"
+              class="btn btn-warning pull-right"
+              style="margin-left:12px;"
+              type="button"><i class="fa fa-plus"></i> Assign specialist to project
+      </button>
+    </div>
+
+  </div>
+  <div class="row" style="margin-top: 28px;">
+    <!-- Menu -->
+    <div class="col-md-3">
+      <br>
+      <div class="list-group list-group-flush">
+        <a (click)="selectAllProjects()" class="list-group-item list-group-item-action">
+          <i class="fa fa-book"></i>&nbsp;All projects
+        </a>
+        <!-- List -->
+        <a (click)="selectProject(project)" *ngFor="let project of projects"
+           class="list-group-item list-group-item-action">
+          <i class="fa fa-book"></i>&nbsp;
+          <input (change)="updateProject(project)" [(ngModel)]="project.name" class="input-label" style="width: 80%"
+                 type="text"/>
+          <a (click)="deleteProject(project)" class="pull-right text-danger">
+            <i class="fa fa-trash-o"></i>
+          </a>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h3 *ngIf="selectedProject != null">{{selectedProject.name}}</h3>
+          <h3 *ngIf="selectedProject == null">All specialists assigned to projects</h3>
+          <p *ngIf="this.workers.length === 0">There is no specialists assigned</p>
+        </div>
+      </div>
+      <div class="row">
+
+        <app-worker-comp (workerDeleted)="removeWorker($event)"
+                         (workerUpdated)="updateWorker($event)"
+                         (workerExchange)="exchangeWorker($event)"
+                         *ngFor="let w of workers | TextFilter:searchText" [worker]="w">
+        </app-worker-comp>
+      </div>
+    </div>
+  </div>
+</div>

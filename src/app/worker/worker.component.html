@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row">
+    <div class="offset-3"></div>
+    <div class="col-md-6">
+      <form #f="ngForm" (ngSubmit)="f.form.valid && createWorker()" class="worker-form" name="form" novalidate>
+        <!-- fName -->
+        <div class="form-group">
+          <label for="fName">First Name</label>
+          <input #fName="ngModel"
+                 [(ngModel)]="model.firstName"
+                 [ngClass]="{ 'is-invalid': f.submitted && fName.invalid }"
+                 class="form-control"
+                 id="fName"
+                 name="fName"
+                 placeholder="First Name"
+                 required
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && fName.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="fName.errors?.required">Field is required</div>
+          </div>
+        </div>
+        <!-- sName -->
+        <div class="form-group">
+          <label for="sName">Second Name</label>
+          <input #sName="ngModel"
+                 [(ngModel)]="model.secondName"
+                 [ngClass]="{ 'is-invalid': f.submitted && sName.invalid }"
+                 class="form-control"
+                 id="sName"
+                 name="sName"
+                 placeholder="Second Name"
+                 required
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && sName.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="sName.errors?.required">Field is required</div>
+          </div>
+        </div>
+        <!-- age -->
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input #age="ngModel"
+                 [(ngModel)]="model.age"
+                 [ngClass]="{ 'is-invalid': f.submitted && age.invalid }"
+                 class="form-control"
+                 id="age"
+                 name="age"
+                 placeholder="age from 16 to 70 years"
+                 required
+                 pattern="^(1[6-9])$|^([2-7]\d{1})$"
+                 type="number"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && age.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="age.errors?.required">Field is required</div>
+            <div *ngIf="age.errors?.pattern">Age from 16 to 70 accepted</div>
+          </div>
+        </div>
+        <!-- title -->
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input #title="ngModel"
+                 [(ngModel)]="model.title"
+                 [ngClass]="{ 'is-invalid': f.submitted && title.invalid }"
+                 class="form-control"
+                 id="title"
+                 name="title"
+                 placeholder="HR CODER ACCOUNTANT"
+                 required
+                 pattern="^HR$|^CODER$|^ACCOUNTANT$"
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && age.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="age.errors?.required">Field is required</div>
+            <div *ngIf="age.errors?.pattern">HR CODER ACCOUNTANT</div>
+          </div>
+        </div>
+
+        <button class="btn btn-info pull-right" type="submit">
+          <i class="fa fa-address-book"></i>
+          <span> Add specialist</span>
+        </button>
+      </form>
+    </div>
+    <div class="offset-3"></div>
+  </div>
+</div>

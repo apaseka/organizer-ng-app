@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row">
+    <div class="offset-3"></div>
+    <div class="col-md-6">
+      <form #f="ngForm" (ngSubmit)="f.form.valid && createProject()" class="project-form" name="form" novalidate>
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Project name</label>
+          <input #name="ngModel"
+                 [(ngModel)]="model.name"
+                 [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                 class="form-control"
+                 id="name"
+                 name="name"
+                 placeholder="Name of the project"
+                 required
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && name.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="name.errors?.required">Field is required</div>
+          </div>
+        </div>
+        <!-- fromDate -->
+        <div class="form-group">
+          <label for="fromDate">Date from</label>
+          <input #fromDate="ngModel"
+                 [(ngModel)]="model.fromDate"
+                 [ngClass]="{ 'is-invalid': f.submitted && fromDate.invalid }"
+                 class="form-control"
+                 id="fromDate"
+                 name="fromDate"
+                 placeholder="yyyy-mm-dd"
+                 required
+                 pattern="^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && fromDate.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="fromDate.errors?.required">Field is required</div>
+            <div *ngIf="fromDate.errors?.pattern">Wrong date format. Use yyyy-mm-dd</div>
+          </div>
+        </div>
+        <!-- toDate -->
+        <div class="form-group">
+          <label for="toDate">Due date</label>
+          <input #toDate="ngModel"
+                 [(ngModel)]="model.toDate"
+                 [ngClass]="{ 'is-invalid': f.submitted && toDate.invalid }"
+                 class="form-control"
+                 id="toDate"
+                 name="toDate"
+                 placeholder="yyyy-mm-dd"
+                 required
+                 pattern="^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$"
+                 type="text"/>
+          <!-- input validation group -->
+          <div *ngIf="f.submitted && toDate.invalid" class="invalid-input">
+            <!-- individual validation errors -->
+            <div *ngIf="toDate.errors?.required">Field is required</div>
+            <div *ngIf="toDate.errors?.pattern">Wrong date format. Use yyyy-mm-dd</div>
+          </div>
+        </div>
+
+        <button class="btn btn-info pull-right" type="submit">
+          <i class="fa fa-pagelines"></i>
+          <span> Create project</span>
+        </button>
+      </form>
+    </div>
+    <div class="offset-3"></div>
+  </div>
+</div>
