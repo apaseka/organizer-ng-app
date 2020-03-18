@@ -1,7 +1,7 @@
-import {WorkerRes} from './workerRes';
-import {ProjectRes} from './projectRes';
+import {WorkerModel} from './workerModel';
+import {ProjectModel} from './projectModel';
 
 export interface Subscription {
- worker: WorkerRes;
- project: ProjectRes;
+ worker: WorkerModel;
+ project: ProjectModel;
 }

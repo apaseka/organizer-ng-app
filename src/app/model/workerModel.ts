@@ -1,4 +1,4 @@
-export interface WorkerRes {
+export interface WorkerModel {
   id: string;
   title: string;
   firstName: string;

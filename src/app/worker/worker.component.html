@@ -73,10 +73,10 @@
                  pattern="^HR$|^CODER$|^ACCOUNTANT$"
                  type="text"/>
           <!-- input validation group -->
-          <div *ngIf="f.submitted && age.invalid" class="invalid-input">
+          <div *ngIf="f.submitted && title.invalid" class="invalid-input">
             <!-- individual validation errors -->
-            <div *ngIf="age.errors?.required">Field is required</div>
-            <div *ngIf="age.errors?.pattern">HR CODER ACCOUNTANT</div>
+            <div *ngIf="title.errors?.required">Field is required</div>
+            <div *ngIf="title.errors?.pattern">HR CODER ACCOUNTANT</div>
           </div>
         </div>
 

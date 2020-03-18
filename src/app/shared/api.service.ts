@@ -2,57 +2,52 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ProjectViewModel} from '../project/project.component';
-import {Project} from '../model/project';
+import {ProjectResponse} from '../model/projectResponse';
 import {WorkerViewModel} from '../worker/worker.component';
-import {Worker} from '../model/worker';
-import {ProjectRes} from '../model/projectRes';
-import {WorkerRes} from '../model/workerRes';
+import {WorkerResponse} from '../model/workerResponse';
+import {ProjectModel} from '../model/projectModel';
+import {WorkerModel} from '../model/workerModel';
 import {Subscription} from '../model/subscription';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private BASE_URL = window['cfgApiBaseUrl'] + '/api';
-  private BASE_URL2 = window['cfgApiBaseUrl'];
-  public ALL_NOTEBOOKS_URL = `${this.BASE_URL}/notebooks/all`;
-  private PROJECT_URL = `${this.BASE_URL2}/project`;
+  private BASE_URL = window['cfgApiBaseUrl'];
+  private PROJECT_URL = `${this.BASE_URL}/project`;
   private UPDATE_PROJECT_URL = `${this.PROJECT_URL}/change`;
-  private WORKER_URL = `${this.BASE_URL2}/worker`;
+  private WORKER_URL = `${this.BASE_URL}/worker`;
 
   constructor(private http: HttpClient) {
 
   }
 
-  getAllProjects(): Observable<ProjectRes[]> {
-    return this.http.get<ProjectRes[]>(this.PROJECT_URL);
+  getAllProjects(): Observable<ProjectModel[]> {
+    return this.http.get<ProjectModel[]>(this.PROJECT_URL);
   }
 
-  postProject(model: ProjectViewModel): Observable<Project> {
-    return this.http.post<Project>(this.PROJECT_URL, model);
+  postProject(model: ProjectViewModel): Observable<ProjectResponse> {
+    return this.http.post<ProjectResponse>(this.PROJECT_URL, model);
   }
 
-  postWorker(model: WorkerViewModel): Observable<Worker> {
-    return this.http.post<Worker>(this.WORKER_URL, model);
-  }
   delProject(id: string): Observable<any> {
     return this.http.delete(this.PROJECT_URL + '/' + id, {responseType: 'text'});
   }
 
-  updateProject(model: ProjectRes): Observable<Project> {
-    return this.http.post<Project>(this.UPDATE_PROJECT_URL, model);
+  updateProject(model: ProjectModel): Observable<ProjectResponse> {
+    return this.http.post<ProjectResponse>(this.UPDATE_PROJECT_URL, model);
   }
 
   deleteWorker(id: string): Observable<any> {
     return this.http.delete(this.WORKER_URL + '/' + id, {responseType: 'text'});
   }
 
-  updateWorker(worker: WorkerRes) {
-    return this.http.post<WorkerRes>(this.WORKER_URL + '/update', worker);
+  getAllWorkers(): Observable<WorkerModel[]> {
+    return this.http.get<WorkerModel[]>(this.WORKER_URL);
   }
 
-  getAllWorkers(): Observable<WorkerRes[]> {
-    return this.http.get<WorkerRes[]>(this.WORKER_URL);
+  createUpdateWorker(model: WorkerViewModel | WorkerModel): Observable<WorkerResponse> {
+    return this.http.post<WorkerResponse>(this.WORKER_URL, model);
   }
 
   subscribe(model: Subscription): Observable<any> {

@@ -1,12 +1,12 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {WorkerRes} from '../model/workerRes';
+import {WorkerModel} from '../model/workerModel';
 
 @Pipe({
   name: 'TextFilter'
 })
 export class TextFilterPipe implements PipeTransform {
 
-  transform(workers: WorkerRes[], text: string): WorkerRes[] {
+  transform(workers: WorkerModel[], text: string): WorkerModel[] {
     if (text == null || text === '') {
       return workers;
     }

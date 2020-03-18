@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {WorkerRes} from '../../model/workerRes';
+import {WorkerModel} from '../../model/workerModel';
 import {OrganizerComponent} from "../../organizer/organizer.component";
 
 @Component({
@@ -9,10 +9,10 @@ import {OrganizerComponent} from "../../organizer/organizer.component";
 })
 export class WorkerCompComponent implements OnInit {
 
-  @Input() worker: WorkerRes;
-  @Output() workerUpdated: EventEmitter<WorkerRes> = new EventEmitter<WorkerRes>();
-  @Output() workerDeleted: EventEmitter<WorkerRes> = new EventEmitter<WorkerRes>();
-  @Output() workerUnlink: EventEmitter<WorkerRes> = new EventEmitter<WorkerRes>();
+  @Input() worker: WorkerModel;
+  @Output() workerUpdated: EventEmitter<WorkerModel> = new EventEmitter<WorkerModel>();
+  @Output() workerDeleted: EventEmitter<WorkerModel> = new EventEmitter<WorkerModel>();
+  @Output() workerUnlink: EventEmitter<WorkerModel> = new EventEmitter<WorkerModel>();
 
   constructor(private organizer: OrganizerComponent) {
   }

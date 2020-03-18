@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../shared/api.service';
-import {Project} from '../model/project';
-import {MyError} from '../model/myError';
+import {ProjectResponse} from '../model/projectResponse';
+import {ErrorModel} from '../model/errorModel';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
@@ -11,8 +11,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class ProjectComponent implements OnInit {
 
-  project: Project;
-  error: MyError;
+  project: ProjectResponse;
 
   model: ProjectViewModel = {
     name: '',
@@ -30,19 +29,11 @@ export class ProjectComponent implements OnInit {
     this.apiService.postProject(this.model).subscribe(
       res => {
         this.project = res;
+        location.reload();
         alert(this.project.msg);
-        if (!this.project.msg.includes('unique')) {
-          location.reload();
-        }
       },
       err => {
-        const error1 = (<HttpErrorResponse>err).error;
-        const message = (<MyError>error1).message;
-        if (message.includes('query did not return a unique result')) {
-          alert('Name not unique');
-        } else {
-          alert('System error');
-        }
+        alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
       }
     );
   }

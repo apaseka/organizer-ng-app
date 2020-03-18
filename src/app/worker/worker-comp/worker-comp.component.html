@@ -1,5 +1,6 @@
 <div class="card bg-warning" style="border:4px solid white;">
   <div class="card-body" style="padding: 8px; margin-top: 8px;">
+<!--    <form #f="ngForm" (ngSubmit)="f.form.valid && organizer.updateWorker()" class="worker-form" name="form" novalidate>-->
     <div>
       <!-- title -->
       <input (change)="wUpdated()"
@@ -20,7 +21,19 @@
              maxlength="2"
              style="width: 80%" type="text"
       />
-
+      <input (change)="wUpdated()"
+             [(ngModel)]="worker.title"
+             class="input-label-lg"
+             maxlength="2"
+             required
+             pattern="^HR$|^CODER$|^ACCOUNTANT$"
+             style="width: 80%" type="text"
+      />
+<!--      &lt;!&ndash; input validation group &ndash;&gt;-->
+<!--      <div *ngIf="f.submitted && age.invalid" class="invalid-input">-->
+<!--        &lt;!&ndash; individual validation errors &ndash;&gt;-->
+<!--        <div *ngIf="age.errors?.required">Field is required</div>-->
+<!--        <div *ngIf="age.errors?.pattern">HR CODER ACCOUNTANT</div>-->
 
     <div *ngIf="organizer.selectedProject==null">
       <a (click)="wDeleted()" class="pull-right text-danger">
@@ -28,7 +41,7 @@
       </a>
     </div>
     <div *ngIf="organizer.selectedProject!=null">
-      <a (click)="wUnlink()" class="pull-right text-dark">unlink
+      <a (click)="wUnlink()" class="pull-right text-dark"> unlink
         <i class="fa fa-link"></i>
       </a>
     </div>

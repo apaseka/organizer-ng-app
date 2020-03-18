@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../shared/api.service';
-import {ProjectRes} from '../model/projectRes';
+import {ProjectModel} from '../model/projectModel';
 import {HttpErrorResponse} from '@angular/common/http';
-import {MyError} from '../model/myError';
-import {WorkerRes} from '../model/workerRes';
+import {ErrorModel} from '../model/errorModel';
+import {WorkerModel} from '../model/workerModel';
 import {Subscription} from '../model/subscription';
 
 @Component({
@@ -13,12 +13,12 @@ import {Subscription} from '../model/subscription';
 })
 export class OrganizerComponent implements OnInit {
 
-  projects: ProjectRes[] = [];
-  linkedWorkers: WorkerRes[] = [];
-  allWorkers: WorkerRes[] = [];
+  projects: ProjectModel[]=[];
+  linkedWorkers: WorkerModel[] = [];
+  allWorkers: WorkerModel[]=[];
 
-  selectedProject: ProjectRes;
-  selectedWorker: WorkerRes;
+  selectedProject: ProjectModel;
+  selectedWorker: WorkerModel;
 
   constructor(private apiService: ApiService) {
   }
@@ -39,78 +39,6 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  updateProject(project: ProjectRes) {
-    this.apiService.updateProject(project).subscribe(
-      res => {
-      },
-      err => {
-        const error1 = (<HttpErrorResponse>err).error;
-        const message = (<MyError>error1).message;
-        if (message.includes('ConstraintViolationException')) {
-          this.getAllProjects();
-          alert('Name not unique');
-        } else {
-          alert('System error');
-        }
-      }
-    );
-  }
-
-  deleteProject(project: ProjectRes) {
-    if (confirm('Are you sure you want to delete project?')) {
-      this.apiService.delProject(project.id).subscribe(
-        res => {
-          if ((<String>res).includes("Can't remove")) {
-            alert(res);
-          } else {
-            const indexOf = this.projects.indexOf(project);
-            this.projects.splice(indexOf, 1);
-            alert(res);
-          }
-        },
-        err => {
-          alert('System error');
-        }
-      );
-    }
-  }
-
-  selectProject(project: ProjectRes) {
-    this.selectedProject = project;
-    this.linkedWorkers = project.workers;
-  }
-
-  selectWorker(worker: WorkerRes) {
-    this.selectedWorker = worker;
-  }
-
-  removeWorker(worker: WorkerRes) {
-    if (confirm('Are you sure you want to delete?')) {
-      this.apiService.deleteWorker(worker.id).subscribe(
-        res => {
-          if ((<String>res).includes('Specialist can\'t be removed while is assigned to project!')) {
-            alert(res);
-          } else {
-            this.fixLinkedWorkersList(worker);
-          }
-        },
-        err => {
-          alert('An error has occurred');
-        }
-      );
-    }
-  }
-
-  updateWorker(worker: WorkerRes) {
-    this.apiService.updateWorker(worker).subscribe(
-      res => {
-      },
-      err => {
-        alert('An error has occurred');
-      }
-    );
-  }
-
   private getAllWorkers() {
     this.apiService.getAllWorkers().subscribe(
       res => {
@@ -122,22 +50,85 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
+  updateProject(project: ProjectModel) {
+    this.apiService.updateProject(project).subscribe(
+      res => {
+      },
+      err => {
+        const errorMsg = (<ErrorModel>(<HttpErrorResponse>err).error).message;
+        location.reload();
+        alert(errorMsg);
+      }
+    );
+  }
+
+  deleteProject(project: ProjectModel) {
+    if (confirm('Are you sure you want to delete project?')) {
+      this.apiService.delProject(project.id).subscribe(
+        res => {
+          const indexOf = this.projects.indexOf(project);
+          this.projects.splice(indexOf, 1);
+          this.selectedProject = null;
+        },
+        err => {
+          const errorMsg = (<ErrorModel>(<HttpErrorResponse>err).error).message;
+          alert(errorMsg);
+        }
+      );
+    }
+  }
+
   selectAllProjects() {
     this.selectedProject = null;
     return this.projects;
   }
 
-  assignWorker(project: ProjectRes, worker: WorkerRes) {
+  selectProject(project: ProjectModel) {
+    this.selectedProject = project;
+    this.linkedWorkers = project.workers;
+  }
+
+  selectWorker(worker: WorkerModel) {
+    this.selectedWorker = worker;
+  }
+
+  removeWorker(worker: WorkerModel) {
+    if (confirm('Are you sure you want to delete?')) {
+      this.apiService.deleteWorker(worker.id).subscribe(
+        res => {
+          this.fixLinkedWorkersList(worker);
+        },
+        err => {
+          alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
+        }
+      );
+    }
+  }
+
+  updateWorker(worker: WorkerModel) {
+    this.apiService.createUpdateWorker(worker).subscribe(
+      res => {
+      },
+      err => {
+        location.reload();
+        alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
+      }
+    );
+  }
+
+  assignWorker(project: ProjectModel, worker: WorkerModel) {
     const newS: Subscription = {
       worker: worker,
       project: project
-
     };
+    if (!project.workers.includes(worker)) {
+      project.workers.push(worker);
+    }
     this.apiService.subscribe(newS).subscribe(
       res => {
-        if (!project.workers.includes(worker))
-          project.workers.push(worker);
-        alert(res);
+        // if (!project.allWorkers.includes(worker)) {
+        //   project.allWorkers.push(worker);
+        // }
       },
       err => {
         alert('An error has occurred');
@@ -145,7 +136,7 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  unlinkWorker(project: ProjectRes, worker: WorkerRes) {
+  unlinkWorker(project: ProjectModel, worker: WorkerModel) {
     const newS: Subscription = {
       worker: worker,
       project: project
@@ -153,7 +144,6 @@ export class OrganizerComponent implements OnInit {
     this.apiService.unsubscribe(newS).subscribe(
       res => {
         this.fixLinkedWorkersList(worker);
-        alert(res);
       },
       err => {
         alert('An error has occurred');
@@ -161,7 +151,7 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  private fixLinkedWorkersList(worker: WorkerRes) {
+  private fixLinkedWorkersList(worker: WorkerModel) {
     const indexOfNote = this.linkedWorkers.indexOf(worker);
     this.linkedWorkers.splice(indexOfNote, 1);
   };

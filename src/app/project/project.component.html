@@ -5,7 +5,7 @@
       <form #f="ngForm" (ngSubmit)="f.form.valid && createProject()" class="project-form" name="form" novalidate>
         <!-- Name -->
         <div class="form-group">
-          <label for="name">Project name</label>
+          <label for="name">Name your project</label>
           <input #name="ngModel"
                  [(ngModel)]="model.name"
                  [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"

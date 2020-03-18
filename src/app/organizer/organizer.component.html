@@ -2,14 +2,15 @@
   <div class="row" style="margin-top:12px;">
     <div class="col-md-4">
       <div class="form-group">
-
+        <div *ngIf="selectedProject!=null">
         <select class="form-control">
           <option *ngFor="let worker of allWorkers"
                   [value]="selectWorker(worker)">{{worker.firstName + ' ' + worker.secondName}} </option>
         </select>
+        </div>
       </div>
       <button (click)="assignWorker(selectedProject, selectedWorker)"
-              [disabled]="selectedProject == null"
+              [hidden]="selectedProject == null"
               class="btn btn-warning pull-right"
               style="margin-left:12px;"
               type="button"><i class="fa fa-plus"></i> Assign specialist to project
@@ -46,7 +47,8 @@
 
           <h3 *ngIf="selectedProject != null">{{selectedProject.name}}</h3>
           <h3 *ngIf="selectedProject == null "></h3>
-          <p style="color: red; font-size: 16px" *ngIf="this.allWorkers.length === 0">No specialists created</p>
+          <p style="color: red; font-size: 16px" *ngIf="this.allWorkers?.length === 0">No specialists created</p>
+          <p style="color: red; font-size: 16px" *ngIf="this.linkedWorkers?.length === 0 && this.selectedProject!=null">No specialists assigned</p>
         </div>
       </div>
 

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../shared/api.service';
-import {Worker} from '../model/worker';
+import {WorkerResponse} from '../model/workerResponse';
+import {HttpErrorResponse} from "@angular/common/http";
+import {ErrorModel} from "../model/errorModel";
 
 @Component({
   selector: 'app-worker',
@@ -15,7 +17,7 @@ export class WorkerComponent implements OnInit {
     secondName: '',
     age: null
   };
-  worker: Worker;
+  worker: WorkerResponse;
 
   constructor(private apiService: ApiService) {
   }
@@ -24,16 +26,14 @@ export class WorkerComponent implements OnInit {
   }
 
   createWorker() {
-    this.apiService.postWorker(this.model).subscribe(
+    this.apiService.createUpdateWorker(this.model).subscribe(
       res => {
         this.worker = res;
+        location.reload();
         alert(this.worker.msg);
-        if (!this.worker.msg.includes('already')) {
-          location.reload();
-        }
       },
       err => {
-        alert('An error has occurred while adding specialist');
+        alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
       }
     );
   }
