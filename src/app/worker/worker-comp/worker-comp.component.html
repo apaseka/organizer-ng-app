@@ -21,9 +21,17 @@
              style="width: 80%" type="text"
       />
 
+
+    <div *ngIf="organizer.selectedProject==null">
       <a (click)="wDeleted()" class="pull-right text-danger">
         <i class="fa fa-trash-o"></i>
       </a>
+    </div>
+    <div *ngIf="organizer.selectedProject!=null">
+      <a (click)="wUnlink()" class="pull-right text-dark">unlink
+        <i class="fa fa-link"></i>
+      </a>
+    </div>
     </div>
     <strong class="text-info" style="font-size: small">{{worker.lastModifiedOn | date:'dd-MM-yyy HH:mm'}}</strong>
   </div>

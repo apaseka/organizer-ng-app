@@ -58,4 +58,8 @@ export class ApiService {
   subscribe(model: Subscription): Observable<any> {
     return this.http.post(this.PROJECT_URL + '/subscribe', model, {responseType: 'text'});
   }
+
+  unsubscribe(model: Subscription): Observable<any> {
+    return this.http.post(this.PROJECT_URL + '/unsubscribe', model, {responseType: 'text'});
+  }
 }

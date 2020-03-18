@@ -54,7 +54,7 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true})
   ],
-  providers: [],
+  providers: [OrganizerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
