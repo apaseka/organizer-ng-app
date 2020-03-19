@@ -4,9 +4,12 @@
       <div class="form-group">
 
         <div *ngIf="selectedProject!=null">
-          <select class="form-control" [hidden]="notLinkedWorkers.length==0">
+          <select class="form-control" id="selection"
+                  [hidden]="notLinkedWorkers.length==0"
+                  [(ngModel)]="selectedWorker"
+          >
             <option *ngFor="let worker of notLinkedWorkers"
-           [ngValue]="workerToLink(worker)" >{{worker.firstName + ' ' + worker.secondName}} </option>
+                    [ngValue]="worker">{{worker.firstName + ' ' + worker.secondName}} </option>
           </select>
 
           <button (click)="linkWorker(selectedProject, selectedWorker)"

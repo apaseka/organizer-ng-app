@@ -20,7 +20,6 @@ export class OrganizerComponent implements OnInit {
 
   selectedProject: ProjectModel;
   selectedWorker: WorkerModel;
-  wToLink: WorkerModel;
 
   constructor(private apiService: ApiService) {
   }
@@ -94,10 +93,6 @@ export class OrganizerComponent implements OnInit {
     return this.selectedWorker = worker;
   }
 
-  workerToLink(worker: WorkerModel) {
-    this.wToLink = worker;
-  }
-
   removeWorker(worker: WorkerModel) {
     if (confirm('Are you sure you want to delete?')) {
       this.apiService.deleteWorker(worker.id).subscribe(
@@ -160,7 +155,7 @@ export class OrganizerComponent implements OnInit {
   };
 
   private updateNotLinked(pr: ProjectModel) {
-    let diff: WorkerModel[] = [];
+    const diff: WorkerModel[] = [];
     const concat1 = diff.concat(this.allWorkers);
     for (let x of pr.workers) {
       for (let d of concat1) {
@@ -172,9 +167,5 @@ export class OrganizerComponent implements OnInit {
     }
     this.notLinkedWorkers = concat1;
     return pr.notLinkedWorkers = concat1;
-  }
-
-  dadada(any) {
-    console.log(any)
   }
 }
