@@ -6,8 +6,7 @@
         <div *ngIf="selectedProject!=null">
           <select class="form-control" [hidden]="notLinkedWorkers.length==0">
             <option *ngFor="let worker of notLinkedWorkers"
-                    (select)="selectWorker(worker)"
-            >{{worker.firstName + ' ' + worker.secondName}} </option>
+           [ngValue]="workerToLink(worker)" >{{worker.firstName + ' ' + worker.secondName}} </option>
           </select>
 
           <button (click)="linkWorker(selectedProject, selectedWorker)"
@@ -65,7 +64,7 @@
       <div class="row" *ngIf="selectedProject != null">
         <app-worker-comp (workerUpdated)="updateWorker($event)"
                          (workerUnlink)="unlinkWorker(selectedProject, selectedWorker)"
-                         *ngFor="let linkedWorker of linkedWorkers" [worker]="selectWorker(linkedWorker)">
+                         *ngFor="let w of linkedWorkers" [worker]="selectWorker(w)">
         </app-worker-comp>
       </div>
     </div>

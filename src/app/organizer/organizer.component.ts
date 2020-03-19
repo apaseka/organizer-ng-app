@@ -20,6 +20,7 @@ export class OrganizerComponent implements OnInit {
 
   selectedProject: ProjectModel;
   selectedWorker: WorkerModel;
+  wToLink: WorkerModel;
 
   constructor(private apiService: ApiService) {
   }
@@ -91,6 +92,10 @@ export class OrganizerComponent implements OnInit {
 
   selectWorker(worker: WorkerModel) {
     return this.selectedWorker = worker;
+  }
+
+  workerToLink(worker: WorkerModel) {
+    this.wToLink = worker;
   }
 
   removeWorker(worker: WorkerModel) {
@@ -165,6 +170,11 @@ export class OrganizerComponent implements OnInit {
         }
       }
     }
+    this.notLinkedWorkers = concat1;
     return pr.notLinkedWorkers = concat1;
+  }
+
+  dadada(any) {
+    console.log(any)
   }
 }
