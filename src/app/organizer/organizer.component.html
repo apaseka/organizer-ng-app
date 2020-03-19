@@ -3,10 +3,12 @@
     <div class="col-md-4">
       <div class="form-group">
         <div *ngIf="selectedProject!=null">
-        <select class="form-control">
-          <option *ngFor="let worker of allWorkers"
-                  [value]="selectWorker(worker)">{{worker.firstName + ' ' + worker.secondName}} </option>
-        </select>
+<!--          <div *ngIf="notLinkedWorkers.length==0">-->
+            <select class="form-control">
+              <option *ngFor="let worker of allWorkers"
+                      [value]="selectWorker(worker)">{{worker.firstName + ' ' + worker.secondName}} </option>
+            </select>
+<!--          </div>-->
         </div>
       </div>
       <button (click)="assignWorker(selectedProject, selectedWorker)"
@@ -48,7 +50,8 @@
           <h3 *ngIf="selectedProject != null">{{selectedProject.name}}</h3>
           <h3 *ngIf="selectedProject == null "></h3>
           <p style="color: red; font-size: 16px" *ngIf="this.allWorkers?.length === 0">No specialists created</p>
-          <p style="color: red; font-size: 16px" *ngIf="this.linkedWorkers?.length === 0 && this.selectedProject!=null">No specialists assigned</p>
+          <p style="color: red; font-size: 16px" *ngIf="this.linkedWorkers?.length === 0 && this.selectedProject!=null">
+            No specialists assigned</p>
         </div>
       </div>
 

@@ -13,9 +13,10 @@ import {Subscription} from '../model/subscription';
 })
 export class OrganizerComponent implements OnInit {
 
-  projects: ProjectModel[]=[];
+  projects: ProjectModel[] = [];
   linkedWorkers: WorkerModel[] = [];
-  allWorkers: WorkerModel[]=[];
+  notLinkedWorkers: WorkerModel[] = [];
+  allWorkers: WorkerModel[] = [];
 
   selectedProject: ProjectModel;
   selectedWorker: WorkerModel;
@@ -86,6 +87,7 @@ export class OrganizerComponent implements OnInit {
   selectProject(project: ProjectModel) {
     this.selectedProject = project;
     this.linkedWorkers = project.workers;
+    this.notLinked();
   }
 
   selectWorker(worker: WorkerModel) {
@@ -155,4 +157,16 @@ export class OrganizerComponent implements OnInit {
     const indexOfNote = this.linkedWorkers.indexOf(worker);
     this.linkedWorkers.splice(indexOfNote, 1);
   };
+
+  private notLinked() {
+    const diff: WorkerModel[] = [];
+    diff.concat(this.linkedWorkers).concat(this.allWorkers);
+    for (const x of this.linkedWorkers) {
+      if (diff.includes(x)) {
+        const indexOfNote = diff.indexOf(x);
+        diff.splice(indexOfNote, 1);
+      }
+    }
+    this.notLinkedWorkers = diff;
+  }
 }
