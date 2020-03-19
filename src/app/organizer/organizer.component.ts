@@ -67,43 +67,42 @@ export class OrganizerComponent implements OnInit {
     if (confirm('Are you sure you want to delete project?')) {
       this.apiService.delProject(project.id).subscribe(
         res => {
-          const indexOf = this.projects.indexOf(project);
-          this.projects.splice(indexOf, 1);
-          this.selectedProject = null;
+
         },
         err => {
           const errorMsg = (<ErrorModel>(<HttpErrorResponse>err).error).message;
           alert(errorMsg);
         }
       );
+      this.getAllProjects();
     }
   }
 
-  selectAllProjects() {
+  selectAllProjectsWorkers() {
     this.selectedProject = null;
-    return this.projects;
+    this.linkedWorkers = this.allWorkers;
   }
 
   selectProject(project: ProjectModel) {
     this.selectedProject = project;
     this.linkedWorkers = project.workers;
-    this.notLinked();
+    this.notLinkedWorkers = this.updateNotLinked(project);
   }
 
   selectWorker(worker: WorkerModel) {
-    this.selectedWorker = worker;
+    return this.selectedWorker = worker;
   }
 
   removeWorker(worker: WorkerModel) {
     if (confirm('Are you sure you want to delete?')) {
       this.apiService.deleteWorker(worker.id).subscribe(
         res => {
-          this.fixLinkedWorkersList(worker);
         },
         err => {
           alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
         }
       );
+      this.getAllWorkers();
     }
   }
 
@@ -118,19 +117,15 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  assignWorker(project: ProjectModel, worker: WorkerModel) {
+  linkWorker(project: ProjectModel, worker: WorkerModel) {
     const newS: Subscription = {
       worker: worker,
       project: project
     };
-    if (!project.workers.includes(worker)) {
-      project.workers.push(worker);
-    }
     this.apiService.subscribe(newS).subscribe(
       res => {
-        // if (!project.allWorkers.includes(worker)) {
-        //   project.allWorkers.push(worker);
-        // }
+        project.workers.push(worker);
+        this.updateNotLinked(project);
       },
       err => {
         alert('An error has occurred');
@@ -145,7 +140,8 @@ export class OrganizerComponent implements OnInit {
     };
     this.apiService.unsubscribe(newS).subscribe(
       res => {
-        this.fixLinkedWorkersList(worker);
+        project.notLinkedWorkers.push(worker);
+        this.removeFromLinkedList(worker, project);
       },
       err => {
         alert('An error has occurred');
@@ -153,20 +149,22 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  private fixLinkedWorkersList(worker: WorkerModel) {
-    const indexOfNote = this.linkedWorkers.indexOf(worker);
+  private removeFromLinkedList(worker: WorkerModel, project: ProjectModel) {
+    const indexOfNote = project.workers.indexOf(worker);
     this.linkedWorkers.splice(indexOfNote, 1);
   };
 
-  private notLinked() {
-    const diff: WorkerModel[] = [];
-    diff.concat(this.linkedWorkers).concat(this.allWorkers);
-    for (const x of this.linkedWorkers) {
-      if (diff.includes(x)) {
-        const indexOfNote = diff.indexOf(x);
-        diff.splice(indexOfNote, 1);
+  private updateNotLinked(pr: ProjectModel) {
+    let diff: WorkerModel[] = [];
+    const concat1 = diff.concat(this.allWorkers);
+    for (let x of pr.workers) {
+      for (let d of concat1) {
+        if (d.id == x.id) {
+          const indexOfNote = concat1.indexOf(x);
+          concat1.splice(indexOfNote, 1);
+        }
       }
     }
-    this.notLinkedWorkers = diff;
+    return pr.notLinkedWorkers = concat1;
   }
 }

@@ -2,35 +2,35 @@
   <div class="row" style="margin-top:12px;">
     <div class="col-md-4">
       <div class="form-group">
+
         <div *ngIf="selectedProject!=null">
-<!--          <div *ngIf="notLinkedWorkers.length==0">-->
-            <select class="form-control">
-              <option *ngFor="let worker of allWorkers"
-                      [value]="selectWorker(worker)">{{worker.firstName + ' ' + worker.secondName}} </option>
-            </select>
-<!--          </div>-->
+          <select class="form-control" [hidden]="notLinkedWorkers.length==0">
+            <option *ngFor="let worker of notLinkedWorkers"
+                    (select)="selectWorker(worker)"
+            >{{worker.firstName + ' ' + worker.secondName}} </option>
+          </select>
+
+          <button (click)="linkWorker(selectedProject, selectedWorker)"
+                  [hidden]="selectedProject == null || notLinkedWorkers.length==0"
+                  class="btn btn-warning pull-right"
+                  style="margin-left:12px;"
+                  type="button"><i class="fa fa-plus"></i> Assign specialist to project
+          </button>
         </div>
       </div>
-      <button (click)="assignWorker(selectedProject, selectedWorker)"
-              [hidden]="selectedProject == null"
-              class="btn btn-warning pull-right"
-              style="margin-left:12px;"
-              type="button"><i class="fa fa-plus"></i> Assign specialist to project
-      </button>
     </div>
-
   </div>
   <div class="row" style="margin-top: 28px;">
     <!-- Menu -->
     <div class="col-md-3">
       <br>
       <div class="list-group list-group-flush">
-        <a (click)="selectAllProjects()" class="list-group-item list-group-item-action">
+        <a (click)="selectAllProjectsWorkers()" class="list-group-item list-group-item-action">
           <i class="fa fa-newspaper-o"></i>&nbsp;All available specialists
         </a>
         <br>
 
-        <!--         List-->
+        <!--  Project List-->
         <a (click)="selectProject(project)" *ngFor="let project of projects"
            class="list-group-item list-group-item-action">
           <i class="fa fa-book"></i>&nbsp;
@@ -49,8 +49,8 @@
 
           <h3 *ngIf="selectedProject != null">{{selectedProject.name}}</h3>
           <h3 *ngIf="selectedProject == null "></h3>
-          <p style="color: red; font-size: 16px" *ngIf="this.allWorkers?.length === 0">No specialists created</p>
-          <p style="color: red; font-size: 16px" *ngIf="this.linkedWorkers?.length === 0 && this.selectedProject!=null">
+          <p style="color: red; font-size: 16px" *ngIf="this.allWorkers.length === 0">No specialists created</p>
+          <p style="color: red; font-size: 16px" *ngIf="this.linkedWorkers.length === 0 && this.selectedProject!=null">
             No specialists assigned</p>
         </div>
       </div>
@@ -58,14 +58,14 @@
       <div class="row" *ngIf="selectedProject == null">
         <app-worker-comp (workerDeleted)="removeWorker($event)"
                          (workerUpdated)="updateWorker($event)"
-                         *ngFor="let w of allWorkers" [worker]="w">
+                         *ngFor="let w of allWorkers" [worker]="selectWorker(w)">
         </app-worker-comp>
       </div>
 
       <div class="row" *ngIf="selectedProject != null">
         <app-worker-comp (workerUpdated)="updateWorker($event)"
                          (workerUnlink)="unlinkWorker(selectedProject, selectedWorker)"
-                         *ngFor="let w of linkedWorkers" [worker]="w">
+                         *ngFor="let linkedWorker of linkedWorkers" [worker]="selectWorker(linkedWorker)">
         </app-worker-comp>
       </div>
     </div>

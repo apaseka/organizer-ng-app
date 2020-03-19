@@ -7,4 +7,5 @@ export interface ProjectModel {
   toDate: string;
   workersNumber: number;
   workers: WorkerModel [];
+  notLinkedWorkers:WorkerModel [];
 }
