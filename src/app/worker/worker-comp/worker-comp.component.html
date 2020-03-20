@@ -1,50 +1,91 @@
 <div class="card bg-warning" style="border:4px solid white;">
   <div class="card-body" style="padding: 8px; margin-top: 8px;">
-<!--    <form #f="ngForm" (ngSubmit)="f.form.valid && organizer.updateWorker()" class="worker-form" name="form" novalidate>-->
     <div>
-      <!-- title -->
-      <input (change)="wUpdated()"
-             [(ngModel)]="worker.firstName"
-             class="input-label-lg"
-             maxlength="20"
-             style="width: 80%" type="text"
-      />
-      <input (change)="wUpdated()"
-             [(ngModel)]="worker.secondName"
-             class="input-label-lg"
-             maxlength="20"
-             style="width: 80%" type="text"
-      />
-      <input (change)="wUpdated()"
-             [(ngModel)]="worker.age"
-             class="input-label-lg"
-             maxlength="2"
-             style="width: 80%" type="text"
-      />
-      <input (change)="wUpdated()"
-             [(ngModel)]="worker.title"
-             class="input-label-lg"
-             maxlength="20"
-             required
-             pattern="^HR$|^CODER$|^ACCOUNTANT$"
-             style="width: 80%" type="text"
-      />
-<!--      &lt;!&ndash; input validation group &ndash;&gt;-->
-<!--      <div *ngIf="f.submitted && age.invalid" class="invalid-input">-->
-<!--        &lt;!&ndash; individual validation errors &ndash;&gt;-->
-<!--        <div *ngIf="age.errors?.required">Field is required</div>-->
-<!--        <div *ngIf="age.errors?.pattern">HR CODER ACCOUNTANT</div>-->
+      <div>
+        <!-- title -->
+        <input #fName="ngModel"
+               (change)="wUpdated()"
+               [(ngModel)]="worker.firstName"
+               [ngClass]="{ 'is-invalid': fName.invalid }"
+               class="input-label-lg"
+               id="fName"
+               name="fName"
+               maxlength="10"
+               style="width: 80%" type="text" required
+        />
+        <!-- input validation group -->
+        <div *ngIf="fName.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="fName.errors?.required">Field is required</div>
+        </div>
+      </div>
+      <div>
+        <input #sName="ngModel"
+               (change)="wUpdated()"
+               [(ngModel)]="worker.secondName"
+               [ngClass]="{ 'is-invalid': sName.invalid }"
+               class="input-label-lg"
+               id="sName"
+               name="sName"
+               maxlength="10"
+               style="width: 80%" type="text" required
+        />
+        <!-- input validation group -->
+        <div *ngIf="sName.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="sName.errors?.required">Field is required</div>
+        </div>
+      </div>
+      <div>
+        <input #age="ngModel"
+               (change)="wUpdated()"
+               [(ngModel)]="worker.age"
+               [ngClass]="{ 'is-invalid': age.invalid }"
+               class="input-label-lg"
+               maxlength="2"
+               style="width: 80%" id="age"
+               name="age"
+               required
+               pattern="^(1[6-9])$|^([2-7]\d{1})$"
+               type="number"/>
+        <!-- input validation group -->
+        <div *ngIf="age.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="age.errors?.required">Field is required</div>
+          <div *ngIf="age.errors?.pattern">age from 16 to 70 years</div>
+        </div>
+      </div>
 
-    <div *ngIf="organizer.selectedProject==null">
-      <a (click)="wDeleted()" class="pull-right text-danger">
-        <i class="fa fa-trash-o"></i>
-      </a>
-    </div>
-    <div *ngIf="organizer.selectedProject!=null">
-      <a (click)="wUnlink()" class="pull-right text-dark"> unlink
-        <i class="fa fa-link"></i>
-      </a>
-    </div>
+      <div>
+        <input #title="ngModel"
+               (change)="wUpdated()"
+               [(ngModel)]="worker.title"
+               [ngClass]="{ 'is-invalid': title.invalid }"
+               class="input-label-lg"
+               id="title"
+               name="title"
+               maxlength="7"
+               required
+               pattern="^HR$|^CODER$|^ACCOUNTANT$"
+               style="width: 80%" type="text"
+        />
+        <!-- input validation group -->
+        <div *ngIf="title.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="title.errors?.required">Field is required</div>
+          <div *ngIf="title.errors?.pattern">HR CODER ACCOUNTANT</div>
+        </div>
+      </div>
+      <div *ngIf="organizer.selectedProject==null">
+        <a (click)="wDeleted()" class="pull-right text-danger">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </div>
+      <div *ngIf="organizer.selectedProject!=null">
+        <a (click)="wUnlink()" class="pull-right text-dark"> unlink
+          <i class="fa fa-link"></i>
+        </a>
+      </div>
     </div>
     <strong class="text-info" style="font-size: small">{{worker.lastModifiedOn | date:'dd-MM-yyy HH:mm'}}</strong>
   </div>

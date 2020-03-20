@@ -2,7 +2,8 @@
   <div class="row">
     <div class="offset-3"></div>
     <div class="col-md-6">
-      <form #f="ngForm" (ngSubmit)="f.form.valid && createWorker()" class="worker-form" name="form" novalidate>
+      <form #f="ngForm"
+            (ngSubmit)="f.form.valid && createWorker()" class="worker-form" name="form" novalidate>
         <!-- fName -->
         <div class="form-group">
           <label for="fName">First Name</label>

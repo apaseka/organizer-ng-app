@@ -5,6 +5,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {ErrorModel} from '../model/errorModel';
 import {WorkerModel} from '../model/workerModel';
 import {Subscription} from '../model/subscription';
+import {ProjectResponse} from "../model/projectResponse";
 
 @Component({
   selector: 'app-organizer',
@@ -54,11 +55,11 @@ export class OrganizerComponent implements OnInit {
   updateProject(project: ProjectModel) {
     this.apiService.updateProject(project).subscribe(
       res => {
+        alert((<ProjectResponse>res).msg);
       },
       err => {
-        const errorMsg = (<ErrorModel>(<HttpErrorResponse>err).error).message;
-        location.reload();
-        alert(errorMsg);
+        this.ngOnInit();
+        alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
       }
     );
   }
@@ -97,7 +98,7 @@ export class OrganizerComponent implements OnInit {
     if (confirm('Are you sure you want to delete?')) {
       this.apiService.deleteWorker(worker.id).subscribe(
         res => {
-          location.reload();
+          this.ngOnInit();
         },
         err => {
           let parsedMsg = JSON.parse((<HttpErrorResponse>err).error);
@@ -110,9 +111,11 @@ export class OrganizerComponent implements OnInit {
   updateWorker(worker: WorkerModel) {
     this.apiService.createUpdateWorker(worker).subscribe(
       res => {
+        this.ngOnInit();
       },
       err => {
-        alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
+        alert("invalid input");
+        this.ngOnInit();
       }
     );
   }
