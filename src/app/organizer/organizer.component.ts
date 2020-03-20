@@ -97,12 +97,13 @@ export class OrganizerComponent implements OnInit {
     if (confirm('Are you sure you want to delete?')) {
       this.apiService.deleteWorker(worker.id).subscribe(
         res => {
+          location.reload();
         },
         err => {
-          alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
+          (<ErrorModel>(<HttpErrorResponse>err).error).message;
+          alert("Specialist can't be removed while is assigned to project!");
         }
       );
-      this.getAllWorkers();
     }
   }
 
@@ -111,7 +112,6 @@ export class OrganizerComponent implements OnInit {
       res => {
       },
       err => {
-        location.reload();
         alert((<ErrorModel>(<HttpErrorResponse>err).error).message);
       }
     );
