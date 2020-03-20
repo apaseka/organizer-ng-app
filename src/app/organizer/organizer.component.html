@@ -66,7 +66,7 @@
 
       <div class="row" *ngIf="selectedProject != null">
         <app-worker-comp (workerUpdated)="updateWorker($event)"
-                         (workerUnlink)="unlinkWorker(selectedProject, selectedWorker)"
+                         (workerUnlink)="unlinkWorker(selectedProject, $event)"
                          *ngFor="let w of linkedWorkers" [worker]="selectWorker(w)">
         </app-worker-comp>
       </div>
