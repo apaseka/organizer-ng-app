@@ -70,8 +70,8 @@ export class OrganizerComponent implements OnInit {
 
         },
         err => {
-          const errorMsg = (<ErrorModel>(<HttpErrorResponse>err).error).message;
-          alert(errorMsg);
+          let parsedMsg = JSON.parse((<HttpErrorResponse>err).error);
+          alert((<ErrorModel> parsedMsg).message);
         }
       );
       this.getAllProjects();
@@ -100,8 +100,8 @@ export class OrganizerComponent implements OnInit {
           location.reload();
         },
         err => {
-          (<ErrorModel>(<HttpErrorResponse>err).error).message;
-          alert("Specialist can't be removed while is assigned to project!");
+          let parsedMsg = JSON.parse((<HttpErrorResponse>err).error);
+          alert((<ErrorModel>parsedMsg).message);
         }
       );
     }
