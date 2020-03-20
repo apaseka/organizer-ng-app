@@ -21,6 +21,8 @@ export class OrganizerComponent implements OnInit {
 
   selectedProject: ProjectModel;
   selectedWorker: WorkerModel;
+  workerId: string;
+  workerMap: Map<string, WorkerModel>;
 
   constructor(private apiService: ApiService) {
   }
@@ -29,6 +31,10 @@ export class OrganizerComponent implements OnInit {
     this.getAllProjects();
     this.getAllWorkers();
   }
+
+  private mapWorkers() {
+    this.workerMap = new Map(this.allWorkers.map(w => [w.id, w] as [string, WorkerModel]));
+   }
 
   public getAllProjects() {
     this.apiService.getAllProjects().subscribe(
@@ -45,6 +51,7 @@ export class OrganizerComponent implements OnInit {
     this.apiService.getAllWorkers().subscribe(
       res => {
         this.allWorkers = res;
+        this.mapWorkers();
       },
       err => {
         alert('An error has occurred;');
@@ -72,7 +79,7 @@ export class OrganizerComponent implements OnInit {
         },
         err => {
           let parsedMsg = JSON.parse((<HttpErrorResponse>err).error);
-          alert((<ErrorModel> parsedMsg).message);
+          alert((<ErrorModel>parsedMsg).message);
         }
       );
       this.getAllProjects();
@@ -120,14 +127,15 @@ export class OrganizerComponent implements OnInit {
     );
   }
 
-  linkWorker(project: ProjectModel, worker: WorkerModel) {
+  linkWorker(project: ProjectModel, worker: string) {
+    const workerModel = this.workerMap.get(worker);
     const newS: Subscription = {
-      worker: worker,
+      worker: workerModel,
       project: project
     };
     this.apiService.subscribe(newS).subscribe(
       res => {
-        project.workers.push(worker);
+        project.workers.push(workerModel);
         this.updateNotLinked(project);
       },
       err => {
@@ -163,7 +171,7 @@ export class OrganizerComponent implements OnInit {
     for (let x of pr.workers) {
       for (let d of concat1) {
         if (d.id == x.id) {
-          const indexOfNote = concat1.indexOf(x);
+          const indexOfNote = concat1.indexOf(d);
           concat1.splice(indexOfNote, 1);
         }
       }

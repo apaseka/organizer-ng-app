@@ -6,13 +6,13 @@
         <div *ngIf="selectedProject!=null">
           <select class="form-control" id="selection"
                   [hidden]="notLinkedWorkers.length==0"
-                  [(ngModel)]="selectedWorker"
+                  [(ngModel)]="workerId"
           >
             <option *ngFor="let worker of notLinkedWorkers"
-                    [ngValue]="worker">{{worker.firstName + ' ' + worker.secondName}} </option>
+                    [value]="worker.id">{{worker.firstName + ' ' + worker.secondName}} </option>
           </select>
 
-          <button (click)="linkWorker(selectedProject, selectedWorker)"
+          <button (click)="linkWorker(selectedProject, workerId)"
                   [hidden]="selectedProject == null || notLinkedWorkers.length==0"
                   class="btn btn-warning pull-right"
                   style="margin-left:12px;"
