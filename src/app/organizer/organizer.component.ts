@@ -34,7 +34,7 @@ export class OrganizerComponent implements OnInit {
 
   private mapWorkers() {
     this.workerMap = new Map(this.allWorkers.map(w => [w.id, w] as [string, WorkerModel]));
-   }
+  }
 
   public getAllProjects() {
     this.apiService.getAllProjects().subscribe(
@@ -75,7 +75,7 @@ export class OrganizerComponent implements OnInit {
     if (confirm('Are you sure you want to delete project?')) {
       this.apiService.delProject(project.id).subscribe(
         res => {
-
+          this.ngOnInit();
         },
         err => {
           let parsedMsg = JSON.parse((<HttpErrorResponse>err).error);
